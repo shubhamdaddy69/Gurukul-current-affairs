@@ -242,6 +242,14 @@
     .nav-btn { padding: 10px 20px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 0.8rem; cursor: pointer; font-family: 'Orbitron'; transition: all 0.2s; }
     .nav-btn:hover { border-color: var(--sky); }
     .nav-btn.submit { border-color: var(--succ); color: var(--succ); }
+    #pause-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:9999; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
+    #pause-overlay.active { display:flex; }
+    #pause-overlay h2 { color:#fff; font-family:'Orbitron'; font-size:1.4rem; letter-spacing:3px; margin:0; }
+    #pause-overlay p { color:#94a3b8; font-size:0.9rem; margin:0; }
+    #resume-btn { background:#0284c7; color:#fff; border:none; padding:14px 40px; border-radius:10px; font-family:'Orbitron'; font-size:1rem; font-weight:bold; cursor:pointer; letter-spacing:2px; }
+    #resume-btn:hover { background:#0369a1; }
+    #pause-btn { background:#f59e0b; color:#fff; border:none; padding:6px 14px; border-radius:8px; font-family:'Orbitron'; font-size:0.65rem; font-weight:bold; cursor:pointer; }
+    #pause-btn:hover { background:#d97706; }
     .nav-btn.submit:hover { background: rgba(74,222,128,0.1); }
     #star-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--muted); transition: color 0.2s; }
     #star-btn.active { color: var(--neon-yellow); }
@@ -286,7 +294,12 @@
         <h1>CURRENT AFFAIRS BY RAJAT KE PAPA</h1>
         <div class="subtitle">CURRENT AFFAIRS PRACTICE PORTAL</div>
     </div>
-    <div id="timer">15:00</div>
+    <div style="display:flex;align-items:center;gap:8px;"><div id="timer">15:00</div><button id="pause-btn" onclick="app.pauseTest()" style="display:none;background:#f59e0b;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-family:Orbitron;font-size:0.65rem;font-weight:bold;cursor:pointer;">⏸ PAUSE</button></div>
+</div>
+<div id="pause-overlay">
+    <h2>⏸ PAUSED</h2>
+    <p>Your test is paused. Timer is stopped.</p>
+    <button id="resume-btn" onclick="app.resumeTest()">▶ RESUME TEST</button>
 </div>
 
 <!-- MODAL for Set Options -->
@@ -349,9 +362,12 @@
 <!-- TEST -->
 <div class="screen" id="screen-test">
     <div id="test-header">
-        <div>
-            <div id="test-header-name">CURRENT AFFAIRS</div>
-            <div id="exam-tag-display" style="margin-top:5px;">SSC EXAM</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+            <div>
+                <div id="test-header-name">CURRENT AFFAIRS</div>
+                <div id="exam-tag-display" style="margin-top:5px;">SSC EXAM</div>
+            </div>
+            <button class="action-btn" style="background:#4285f4;color:#fff;border:none;" onclick="app.openGoogle()">🔍 GOOGLE</button>
         </div>
         <div class="test-actions">
             <button id="toggle-palette-btn" class="action-btn" onclick="app.togglePalette()">HIDE PALETTE</button>
@@ -22740,6 +22756,8 @@ const app = {
         this.hideScreens();
         document.getElementById('screen-test').classList.add('active');
         document.getElementById('timer').style.display = 'block';
+        document.getElementById('pause-btn').style.display = 'inline-block';
+        this.paused = false;
         document.getElementById('test-header-name').innerText = `${month.toUpperCase()} ${year} · SET ${num}`;
 
         const paletteContainer = document.getElementById('palette-container');
@@ -22832,7 +22850,30 @@ const app = {
     jump(i) { this.currentIdx = i; this.visited.add(i); this.renderQuestion(); },
     next() { if (this.currentIdx < this.questions.length - 1) { this.currentIdx++; this.visited.add(this.currentIdx); this.renderQuestion(); } },
     prev() { if (this.currentIdx > 0) { this.currentIdx--; this.renderQuestion(); } },
+    openGoogle() {
+        const q = this.questions[this.currentIdx];
+        if (!q) return;
+        const optsText = q.options.map((o, i) => `${String.fromCharCode(65+i)}. ${o}`).join(' | ');
+        const text = `${q.q} | ${optsText}`;
+        window.open('https://www.google.com/search?q=' + encodeURIComponent(text), '_blank');
+    },
 
+
+    pauseTest() {
+        if (this.paused) return;
+        this.paused = true;
+        clearInterval(this.interval);
+        document.getElementById('pause-overlay').classList.add('active');
+        document.getElementById('pause-btn').textContent = '▶ RESUME';
+        document.getElementById('pause-btn').onclick = () => this.resumeTest();
+    },
+    resumeTest() {
+        this.paused = false;
+        document.getElementById('pause-overlay').classList.remove('active');
+        document.getElementById('pause-btn').textContent = '⏸ PAUSE';
+        document.getElementById('pause-btn').onclick = () => this.pauseTest();
+        this.startTimer();
+    },
     startTimer() {
         clearInterval(this.interval);
         this.interval = setInterval(() => {
@@ -22847,6 +22888,8 @@ const app = {
         if (!auto && !confirm("Submit Test?")) return;
         clearInterval(this.interval);
         document.getElementById('timer').style.display = 'none';
+        document.getElementById('pause-btn').style.display = 'none';
+        document.getElementById('pause-overlay').classList.remove('active');
 
         let r = 0, w = 0, s = 0;
         const key = `${this.currentYear}_${this.currentMonth}`;
