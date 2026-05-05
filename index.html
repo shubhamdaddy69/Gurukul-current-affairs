@@ -23787,6 +23787,15 @@ const app = {
     pendingSetInfo: null, // { year, month, setNum, setQs }
 
     init() {
+        if (!localStorage.getItem('ca_initialized')) {
+            localStorage.removeItem('ca_saved');
+            localStorage.removeItem('ca_blunders');
+            localStorage.removeItem('ca_attempts');
+            localStorage.setItem('ca_initialized', 'true');
+            this.savedItems = {};
+            this.blunders = {};
+            this.attempts = {};
+        }
         this.renderYearGrids();
         this.updateAuxGrids();
         const savedPref = localStorage.getItem('ca_palette_visible');
