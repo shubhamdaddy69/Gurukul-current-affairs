@@ -238,8 +238,8 @@
     .ans-feedback.wrong { background: rgba(248,113,113,0.12); border: 1.5px solid #f87171; color: #f87171; }
 
     /* NAV BUTTONS */
-    .nav-row { display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-    .nav-btn { padding: 10px 20px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 0.8rem; cursor: pointer; font-family: 'Orbitron'; transition: all 0.2s; }
+    .nav-row { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
+    .nav-btn { flex: 1; padding: 10px 4px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 0.65rem; cursor: pointer; font-family: 'Orbitron'; transition: all 0.2s; text-align: center; white-space: nowrap; min-width: 0; }
     .nav-btn:hover { border-color: var(--sky); }
     .nav-btn.submit { border-color: var(--succ); color: var(--succ); }
     #pause-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:9999; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
@@ -344,8 +344,7 @@
 
 <div class="app-header">
     <div>
-        <h1>CURRENT AFFAIRS BY RAJAT KE PAPA</h1>
-        <div class="subtitle">CURRENT AFFAIRS PRACTICE PORTAL</div>
+        <h1>CURRENT AFFAIRS</h1>
     </div>
     <div style="display:flex;align-items:center;gap:8px;"><div id="timer">15:00</div><button id="pause-btn" onclick="app.pauseTest()" style="display:none;background:#f59e0b;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-family:Orbitron;font-size:0.65rem;font-weight:bold;cursor:pointer;">⏸ PAUSE</button></div>
 </div>
@@ -433,21 +432,18 @@
 <div class="screen" id="screen-test">
     <div id="test-header">
         <div style="display:flex;align-items:center;gap:8px;">
-            <div>
-                <div id="test-header-name">CURRENT AFFAIRS</div>
-                <div id="exam-tag-display" style="margin-top:5px;">SSC EXAM</div>
-            </div>
+            <button id="header-save-btn" class="action-btn" onclick="app.saveAndGoToSaved()" style="border-color:var(--neon-yellow);color:var(--neon-yellow);font-size:0.65rem;">☆ SAVE</button>
             <button class="action-btn" style="background:#4285f4;color:#fff;border:none;" onclick="app.openGoogle()">🔍 GOOGLE</button>
         </div>
         <div class="test-actions">
-            <button id="toggle-palette-btn" class="action-btn" onclick="app.togglePalette()">HIDE PALETTE</button>
+            <button id="toggle-palette-btn" class="action-btn" onclick="app.togglePalette()">PALETTE</button>
         </div>
     </div>
 
     <div class="q-card">
         <div class="q-meta">
             <span id="q-prog">Q1/50</span>
-            <button id="star-btn" onclick="app.toggleBookmark()" title="Save Question">☆</button>
+            <button id="star-btn" onclick="app.toggleBookmark()" title="Save Question" style="background:none;border:1px solid var(--border);border-radius:8px;padding:5px 12px;cursor:pointer;color:var(--muted);font-family:'Orbitron';font-size:0.65rem;transition:all 0.2s;display:flex;align-items:center;gap:5px;">☆ <span>SAVE</span></button>
         </div>
         <div id="instruction-area"></div>
         <div id="q-text"></div>
@@ -23982,16 +23978,16 @@ const app = {
         document.getElementById('timer').style.display = 'block';
         document.getElementById('pause-btn').style.display = 'inline-block';
         this.paused = false;
-        document.getElementById('test-header-name').innerText = `${month.toUpperCase()} ${year} · SET ${num}`;
+        // header name replaced by save button
 
         const paletteContainer = document.getElementById('palette-container');
         const toggleBtn = document.getElementById('toggle-palette-btn');
         if (!this.paletteVisible) {
             paletteContainer.classList.add('hidden');
-            toggleBtn.innerText = 'SHOW PALETTE';
+            toggleBtn.innerText = 'PALETTE';
         } else {
             paletteContainer.classList.remove('hidden');
-            toggleBtn.innerText = 'HIDE PALETTE';
+            toggleBtn.innerText = 'PALETTE';
         }
 
         this.renderQuestion();
@@ -24004,10 +24000,10 @@ const app = {
         const toggleBtn = document.getElementById('toggle-palette-btn');
         if (this.paletteVisible) {
             paletteContainer.classList.remove('hidden');
-            toggleBtn.innerText = 'HIDE PALETTE';
+            toggleBtn.innerText = 'PALETTE';
         } else {
             paletteContainer.classList.add('hidden');
-            toggleBtn.innerText = 'SHOW PALETTE';
+            toggleBtn.innerText = 'PALETTE';
         }
         localStorage.setItem('ca_palette_visible', this.paletteVisible);
     },
@@ -24015,14 +24011,23 @@ const app = {
     renderQuestion() {
         const q = this.questions[this.currentIdx];
         document.getElementById('q-prog').innerText = `Q${this.currentIdx + 1}/${this.questions.length}`;
-        document.getElementById('exam-tag-display').innerText = q.exam || "SSC EXAM";
         document.getElementById('instruction-area').innerHTML = q.instr ? `<div class="instruction-box">${q.instr}</div>` : '';
         document.getElementById('q-text').innerText = q.q;
 
         const isSaved = this.savedItems[`${this.currentYear}_${this.currentMonth}`] &&
             this.savedItems[`${this.currentYear}_${this.currentMonth}`].some(x => x.q === q.q);
-        document.getElementById('star-btn').classList.toggle('active', isSaved);
-        document.getElementById('star-btn').innerText = isSaved ? '★' : '☆';
+        const starBtn = document.getElementById('star-btn');
+        starBtn.classList.toggle('active', isSaved);
+        starBtn.innerHTML = isSaved ? '★ <span>SAVED</span>' : '☆ <span>SAVE</span>';
+        starBtn.style.color = isSaved ? 'var(--neon-yellow)' : 'var(--muted)';
+        starBtn.style.borderColor = isSaved ? 'var(--neon-yellow)' : 'var(--border)';
+
+        const headerSaveBtn = document.getElementById('header-save-btn');
+        if (headerSaveBtn) {
+            headerSaveBtn.innerText = isSaved ? '★ SAVED' : '☆ SAVE';
+            headerSaveBtn.style.color = 'var(--neon-yellow)';
+            headerSaveBtn.style.borderColor = 'var(--neon-yellow)';
+        }
 
         const userAns = this.userAns[this.currentIdx];
         const hasAnswered = userAns !== undefined;
@@ -24122,11 +24127,16 @@ const app = {
 
         this.questions.forEach((q, i) => {
             const u = this.userAns[i];
-            if (u === undefined) s++;
-            else if (u === q.correct) r++;
+            if (u === undefined) {
+                s++;
+                // Add skipped questions to blunders
+                const enriched = Object.assign({}, q, { _type: 'skipped', _key: key });
+                if (!this.blunders[key].some(x => x.q === q.q)) this.blunders[key].push(enriched);
+            } else if (u === q.correct) r++;
             else {
                 w++;
-                if (!this.blunders[key].some(x => x.q === q.q)) this.blunders[key].push(q);
+                const enriched = Object.assign({}, q, { _type: 'wrong', _key: key });
+                if (!this.blunders[key].some(x => x.q === q.q)) this.blunders[key].push(enriched);
             }
         });
 
@@ -24183,6 +24193,38 @@ const app = {
         this.startTest(this.questions, this.currentSetNum, this.currentYear, this.currentMonth);
     },
 
+    saveAndGoToSaved() {
+        const q = this.questions[this.currentIdx];
+        const key = `${this.currentYear}_${this.currentMonth}`;
+        if (!this.savedItems[key]) this.savedItems[key] = [];
+        if (!this.savedItems[key].some(x => x.q === q.q)) {
+            this.savedItems[key].push(q);
+            localStorage.setItem('ca_saved', JSON.stringify(this.savedItems));
+        }
+        clearInterval(this.interval);
+        document.getElementById('timer').style.display = 'none';
+        this.updateAuxGrids();
+        this.viewSpecial(key, 'saved');
+    },
+
+    saveAndGoToSaved() {
+        const q = this.questions[this.currentIdx];
+        const key = `${this.currentYear}_${this.currentMonth}`;
+        if (!this.savedItems[key]) this.savedItems[key] = [];
+        const alreadySaved = this.savedItems[key].some(x => x.q === q.q);
+        if (!alreadySaved) {
+            this.savedItems[key].push(q);
+            localStorage.setItem('ca_saved', JSON.stringify(this.savedItems));
+            this.updateAuxGrids();
+        }
+        const btn = document.getElementById('header-save-btn');
+        if (btn) {
+            btn.innerText = '★ SAVED';
+            btn.style.color = 'var(--neon-yellow)';
+            btn.style.borderColor = 'var(--neon-yellow)';
+        }
+    },
+
     toggleBookmark() {
         const q = this.questions[this.currentIdx];
         const key = `${this.currentYear}_${this.currentMonth}`;
@@ -24201,16 +24243,27 @@ const app = {
         const bEmpty = document.getElementById('blunder-empty');
         const sEmpty = document.getElementById('saved-empty');
 
-        const bKeys = Object.keys(this.blunders).filter(k => this.blunders[k].length > 0);
-        const sKeys = Object.keys(this.savedItems).filter(k => this.savedItems[k].length > 0);
+        // Sort keys chronologically (year_month format)
+        const monthOrder = {"January":1,"February":2,"March":3,"April":4,"May":5,"June":6,"July":7,"August":8,"September":9,"October":10,"November":11,"December":12};
+        const sortKeys = (keys) => keys.sort((a, b) => {
+            const [yrA, ...mA] = a.split('_'); const [yrB, ...mB] = b.split('_');
+            const moA = mA.join('_'); const moB = mB.join('_');
+            if (yrA !== yrB) return parseInt(yrA) - parseInt(yrB);
+            return (monthOrder[moA] || 99) - (monthOrder[moB] || 99);
+        });
+
+        const bKeys = sortKeys(Object.keys(this.blunders).filter(k => this.blunders[k].length > 0));
+        const sKeys = sortKeys(Object.keys(this.savedItems).filter(k => this.savedItems[k].length > 0));
 
         if (bGrid) {
             bGrid.innerHTML = bKeys.map(key => {
                 const [yr, ...mParts] = key.split('_');
                 const mo = mParts.join('_');
+                const wrongCount = this.blunders[key].filter(q => !q._type || q._type === 'wrong').length;
+                const skipCount = this.blunders[key].filter(q => q._type === 'skipped').length;
                 return `<div class="menu-card" onclick="app.viewSpecial('${key}','blunders')">
                     <h3>${mo}</h3>
-                    <p>${yr} · ${this.blunders[key].length} Errors</p>
+                    <p>${yr} · <span style="color:var(--err)">${wrongCount} Wrong</span>${skipCount > 0 ? ' · <span style="color:var(--muted)">' + skipCount + ' Skipped</span>' : ''}</p>
                 </div>`;
             }).join('');
             if (bEmpty) bEmpty.style.display = bKeys.length ? 'none' : 'block';
@@ -24221,7 +24274,7 @@ const app = {
                 const mo = mParts.join('_');
                 return `<div class="menu-card" onclick="app.viewSpecial('${key}','saved')">
                     <h3>${mo}</h3>
-                    <p>${yr} · ${this.savedItems[key].length} Items</p>
+                    <p>${yr} · ${this.savedItems[key].length} Saved</p>
                 </div>`;
             }).join('');
             if (sEmpty) sEmpty.style.display = sKeys.length ? 'none' : 'block';
@@ -24246,22 +24299,55 @@ const app = {
         this.hideScreens();
         document.getElementById('screen-analysis').classList.add('active');
 
+        const wrongCount = type === 'blunders' ? specialQs.filter(q => !q._type || q._type === 'wrong').length : 0;
+        const skipCount = type === 'blunders' ? specialQs.filter(q => q._type === 'skipped').length : 0;
+        const subLabel = type === 'blunders' 
+            ? `<span style="color:var(--err)">${wrongCount} Wrong</span>${skipCount > 0 ? ' &nbsp;·&nbsp; <span style="color:var(--muted)">' + skipCount + ' Skipped</span>' : ''}`
+            : `${specialQs.length} Saved Questions`;
+
         document.getElementById('analysis-header-area').innerHTML = `
             <div class="score-box">
                 <h2 style="font-family:'Orbitron'; color:var(--sky); font-size:0.8rem; margin-bottom:8px;">${type.toUpperCase()} REVIEW</h2>
                 <h1 style="font-size:3.5rem; font-family:'Orbitron';">${specialQs.length}</h1>
                 <p style="color:var(--muted); font-size:0.8rem; margin-top:8px;">${mo} ${yr}</p>
+                <p style="font-size:0.75rem; margin-top:6px;">${subLabel}</p>
             </div>`;
 
         let html = "";
         specialQs.forEach((q, i) => {
+            const qType = q._type || 'wrong';
+            const typeLabel = type === 'blunders' ? `<span style="font-size:0.6rem; padding:2px 8px; border-radius:10px; background:${qType === 'skipped' ? 'rgba(100,116,139,0.2)' : 'rgba(248,113,113,0.15)'}; color:${qType === 'skipped' ? 'var(--muted)' : 'var(--err)'}; border:1px solid ${qType === 'skipped' ? 'var(--border)' : 'rgba(248,113,113,0.4)'}; margin-left:8px;">${qType === 'skipped' ? 'SKIPPED' : 'WRONG'}</span>` : '';
+            const saveKey = `${this.currentYear}_${this.currentMonth}`;
+            const isSaved = this.savedItems[saveKey] && this.savedItems[saveKey].some(x => x.q === q.q);
             html += `<div class="sol-box">
-                <div style="font-weight:bold; margin-bottom:10px; font-size:0.9rem;">Q.${i + 1} ${q.q}</div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                    <div style="font-weight:bold; font-size:0.9rem; flex:1;">Q.${i + 1} ${q.q}${typeLabel}</div>
+                    <button onclick="app.toggleSaveFromReview('${saveKey}', ${i})" style="background:none; border:1px solid ${isSaved ? 'var(--neon-yellow)' : 'var(--border)'}; border-radius:6px; padding:3px 8px; cursor:pointer; color:${isSaved ? 'var(--neon-yellow)' : 'var(--muted)'}; font-family:'Orbitron'; font-size:0.55rem; margin-left:8px; white-space:nowrap;" id="save-btn-review-${i}">${isSaved ? '★ SAVED' : '☆ SAVE'}</button>
+                </div>
                 ${q.options.map((o, idx) => `<div style="color:${idx === q.correct ? 'var(--succ)' : 'var(--muted)'}; padding:4px 0;">${String.fromCharCode(65 + idx)}. ${o}</div>`).join('')}
                 <div style="margin-top:10px; font-size:0.82rem; border-top:1px solid var(--border); padding-top:10px; color:var(--muted);"><b style="color:var(--text)">EXP:</b> ${q.exp}</div>
             </div>`;
         });
         document.getElementById('analysis-list').innerHTML = html;
+    },
+
+    toggleSaveFromReview(key, qIdx) {
+        const q = this.questions[qIdx];
+        if (!q) return;
+        if (!this.savedItems[key]) this.savedItems[key] = [];
+        const idx = this.savedItems[key].findIndex(x => x.q === q.q);
+        if (idx > -1) this.savedItems[key].splice(idx, 1);
+        else this.savedItems[key].push(q);
+        localStorage.setItem('ca_saved', JSON.stringify(this.savedItems));
+        this.updateAuxGrids();
+        // Update button
+        const btn = document.getElementById(`save-btn-review-${qIdx}`);
+        if (btn) {
+            const isSaved = this.savedItems[key] && this.savedItems[key].some(x => x.q === q.q);
+            btn.innerText = isSaved ? '★ SAVED' : '☆ SAVE';
+            btn.style.color = isSaved ? 'var(--neon-yellow)' : 'var(--muted)';
+            btn.style.borderColor = isSaved ? 'var(--neon-yellow)' : 'var(--border)';
+        }
     },
 
     parseData(raw) {
