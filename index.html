@@ -23787,11 +23787,11 @@ const app = {
     pendingSetInfo: null, // { year, month, setNum, setQs }
 
     init() {
-        if (!localStorage.getItem('ca_initialized')) {
+        if (!localStorage.getItem('ca_initialized_v2')) {
             localStorage.removeItem('ca_saved');
             localStorage.removeItem('ca_blunders');
             localStorage.removeItem('ca_attempts');
-            localStorage.setItem('ca_initialized', 'true');
+            localStorage.setItem('ca_initialized_v2', 'true');
             this.savedItems = {};
             this.blunders = {};
             this.attempts = {};
