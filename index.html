@@ -280,6 +280,59 @@
     .legend span { display: flex; align-items: center; gap: 5px; }
     .legend .dot { width: 12px; height: 12px; border-radius: 3px; }
 
+    /* BEAUTIFUL IMPORTANT TOPIC CARDS */
+    .topic-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 14px 14px;
+        cursor: pointer;
+        transition: all 0.22s cubic-bezier(.4,0,.2,1);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .topic-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: var(--tc);
+        border-radius: 14px 14px 0 0;
+    }
+    .topic-card:hover {
+        border-color: var(--tc);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 24px rgba(0,0,0,0.4), 0 0 0 1px var(--tc);
+    }
+    .topic-card .tc-emoji { font-size: 1.6rem; margin-bottom: 8px; display: block; }
+    .topic-card .tc-name {
+        font-family: 'Orbitron';
+        font-size: 0.62rem;
+        letter-spacing: 1px;
+        color: var(--tc);
+        margin-bottom: 6px;
+        line-height: 1.4;
+    }
+    .topic-card .tc-badge {
+        font-size: 0.6rem;
+        padding: 3px 8px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-top: 4px;
+        border: 1px solid;
+    }
+    .tc-badge.ready { background: rgba(74,222,128,0.12); color: var(--succ); border-color: rgba(74,222,128,0.3); }
+    .tc-badge.done  { background: rgba(240,224,64,0.12); color: var(--neon-yellow); border-color: rgba(240,224,64,0.3); }
+    .tc-badge.empty { background: rgba(100,116,139,0.1); color: var(--muted); border-color: var(--border); }
+    .topic-card .tc-num {
+        position: absolute;
+        top: 8px; right: 10px;
+        font-size: 0.55rem;
+        color: var(--muted);
+        font-family: 'Orbitron';
+    }
+
     @media(max-width:600px) {
         .app-header h1 { font-size: 0.7rem; }
         .screen { padding: 14px; }
@@ -325,15 +378,23 @@
     </div>
 
     <div class="tab-content active" id="tab-practice">
-        <!-- 2025 -->
-        <div class="year-section">
-            <div class="year-label">CURRENT AFFAIRS 2025</div>
-            <div class="sets-grid" id="grid-2025"></div>
-        </div>
-        <!-- 2026 -->
-        <div class="year-section">
-            <div class="year-label">CURRENT AFFAIRS 2026</div>
-            <div class="sets-grid" id="grid-2026"></div>
+        <!-- 3 Landing Cards -->
+        <div id="landing-cards" class="topics-grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); margin-top:10px;">
+            <div class="menu-card" onclick="app.showYearScreen('2025')" style="padding:28px 20px;">
+                <div style="font-size:2rem; margin-bottom:10px;">📅</div>
+                <h3 style="font-size:1rem; letter-spacing:2px;">2025</h3>
+                <p>Current Affairs 2025<br>Month-wise Sets</p>
+            </div>
+            <div class="menu-card" onclick="app.showYearScreen('2026')" style="padding:28px 20px;">
+                <div style="font-size:2rem; margin-bottom:10px;">🗓️</div>
+                <h3 style="font-size:1rem; letter-spacing:2px;">2026</h3>
+                <p>Current Affairs 2026<br>Month-wise Sets</p>
+            </div>
+            <div class="menu-card" onclick="app.showYearScreen('important')" style="padding:28px 20px;">
+                <div style="font-size:2rem; margin-bottom:10px;">⚡</div>
+                <h3 style="font-size:1rem; letter-spacing:2px; color:var(--neon-yellow);">IMPORTANT<br>TOPICS</h3>
+                <p>Topic-wise Practice<br>50 Sets</p>
+            </div>
         </div>
     </div>
 
@@ -350,10 +411,19 @@
     </div>
 </div>
 
+<!-- YEAR / CATEGORY DETAIL SCREEN -->
+<div class="screen" id="screen-year">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+        <button class="action-btn" onclick="app.goHome()">← HOME</button>
+        <h2 id="year-screen-title" style="font-family:'Orbitron'; font-size:0.9rem; color:var(--neon-yellow);"></h2>
+    </div>
+    <div class="sets-grid" id="year-screen-grid"></div>
+</div>
+
 <!-- SETS SCREEN (month detail) -->
 <div class="screen" id="screen-sets">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-        <button class="action-btn" onclick="app.goHome()">← HOME</button>
+        <button class="action-btn" onclick="app.goBackFromSets()">← BACK</button>
         <h2 id="set-title" style="font-family:'Orbitron'; font-size:0.9rem; color:var(--neon-yellow);"></h2>
     </div>
     <div class="sets-grid" id="set-list-container"></div>
@@ -371,7 +441,6 @@
         </div>
         <div class="test-actions">
             <button id="toggle-palette-btn" class="action-btn" onclick="app.togglePalette()">HIDE PALETTE</button>
-            <button class="action-btn warn" onclick="app.submit()">SUBMIT</button>
         </div>
     </div>
 
@@ -22600,6 +22669,81 @@ CA_DATA["2026"]["December"] = ``
 // `;
 
 // =====================================================
+// IMPORTANT TOPICS — EDIT NAMES & EMOJIS HERE
+// =====================================================
+const IMPORTANT_TOPICS_LIST = [
+    { name: "Polity",               emoji: "⚖️",  color: "#f59e0b" },
+    { name: "Economy",              emoji: "📈",  color: "#34d399" },
+    { name: "History",              emoji: "🏛️",  color: "#a78bfa" },
+    { name: "Geography",            emoji: "🌍",  color: "#38bdf8" },
+    { name: "Science & Tech",       emoji: "🔬",  color: "#fb7185" },
+    { name: "Environment",          emoji: "🌿",  color: "#4ade80" },
+    { name: "Sports",               emoji: "🏆",  color: "#fbbf24" },
+    { name: "Awards & Honours",     emoji: "🎖️",  color: "#e879f9" },
+    { name: "Defence",              emoji: "🛡️",  color: "#60a5fa" },
+    { name: "Banking & Finance",    emoji: "🏦",  color: "#34d399" },
+    { name: "International",        emoji: "🌐",  color: "#f97316" },
+    { name: "Summits & Meetings",   emoji: "🤝",  color: "#38bdf8" },
+    { name: "Govt Schemes",         emoji: "📋",  color: "#fb923c" },
+    { name: "Books & Authors",      emoji: "📚",  color: "#a78bfa" },
+    { name: "Appointments",         emoji: "👤",  color: "#f59e0b" },
+    { name: "Ranks & Reports",      emoji: "📊",  color: "#34d399" },
+    { name: "Index & Indicators",   emoji: "📉",  color: "#60a5fa" },
+    { name: "Art & Culture",        emoji: "🎨",  color: "#e879f9" },
+    { name: "Social Issues",        emoji: "🧩",  color: "#fb7185" },
+    { name: "Agriculture",          emoji: "🌾",  color: "#4ade80" },
+    { name: "Health",               emoji: "🏥",  color: "#fb923c" },
+    { name: "Space",                emoji: "🚀",  color: "#60a5fa" },
+    { name: "Disasters",            emoji: "⚠️",  color: "#f87171" },
+    { name: "Energy",               emoji: "⚡",  color: "#fbbf24" },
+    { name: "Transport",            emoji: "🚆",  color: "#38bdf8" },
+    { name: "Topic 26",             emoji: "📌",  color: "#a78bfa" },
+    { name: "Topic 27",             emoji: "📌",  color: "#34d399" },
+    { name: "Topic 28",             emoji: "📌",  color: "#fb7185" },
+    { name: "Topic 29",             emoji: "📌",  color: "#f59e0b" },
+    { name: "Topic 30",             emoji: "📌",  color: "#60a5fa" },
+    { name: "Topic 31",             emoji: "📌",  color: "#e879f9" },
+    { name: "Topic 32",             emoji: "📌",  color: "#4ade80" },
+    { name: "Topic 33",             emoji: "📌",  color: "#fb923c" },
+    { name: "Topic 34",             emoji: "📌",  color: "#38bdf8" },
+    { name: "Topic 35",             emoji: "📌",  color: "#a78bfa" },
+    { name: "Topic 36",             emoji: "📌",  color: "#fbbf24" },
+    { name: "Topic 37",             emoji: "📌",  color: "#34d399" },
+    { name: "Topic 38",             emoji: "📌",  color: "#fb7185" },
+    { name: "Topic 39",             emoji: "📌",  color: "#60a5fa" },
+    { name: "Topic 40",             emoji: "📌",  color: "#f59e0b" },
+    { name: "Topic 41",             emoji: "📌",  color: "#e879f9" },
+    { name: "Topic 42",             emoji: "📌",  color: "#4ade80" },
+    { name: "Topic 43",             emoji: "📌",  color: "#fb923c" },
+    { name: "Topic 44",             emoji: "📌",  color: "#38bdf8" },
+    { name: "Topic 45",             emoji: "📌",  color: "#a78bfa" },
+    { name: "Topic 46",             emoji: "📌",  color: "#fbbf24" },
+    { name: "Topic 47",             emoji: "📌",  color: "#34d399" },
+    { name: "Topic 48",             emoji: "📌",  color: "#fb7185" },
+    { name: "Topic 49",             emoji: "📌",  color: "#60a5fa" },
+    { name: "Topic 50",             emoji: "📌",  color: "#f59e0b" },
+];
+
+const IMPORTANT_DATA = {};
+IMPORTANT_TOPICS_LIST.forEach(t => { IMPORTANT_DATA[t.name] = ""; });
+
+// HOW TO ADD QUESTIONS:
+// IMPORTANT_DATA["Polity"] = `
+// Q.1 Question here?
+// A. Option A
+// B. Option B
+// C. Option C
+// D. Option D
+// Ans: A
+// Exp: Explanation here.
+// Exam: SSC CGL
+// `;
+
+// HOW TO RENAME A TOPIC:
+// Just change the "name" field above, e.g. { name: "Topic 26", ... } → { name: "Judiciary", ... }
+// Then paste questions using that new name: IMPORTANT_DATA["Judiciary"] = `...`
+
+// =====================================================
 // APP
 // =====================================================
 const app = {
@@ -22637,9 +22781,36 @@ const app = {
     },
 
     renderYearGrids() {
-        YEARS.forEach(year => {
-            const grid = document.getElementById(`grid-${year}`);
-            if (!grid) return;
+        // No-op: year grids are now rendered in showYearScreen
+    },
+
+    showYearScreen(yearOrKey) {
+        this.hideScreens();
+        document.getElementById('screen-year').classList.add('active');
+        const grid = document.getElementById('year-screen-grid');
+        grid.innerHTML = '';
+
+        if (yearOrKey === 'important') {
+            document.getElementById('year-screen-title').innerText = '⚡ IMPORTANT TOPICS';
+            grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(140px, 1fr))';
+            grid.innerHTML = IMPORTANT_TOPICS_LIST.map((t, idx) => {
+                const allQs = this.parseData(IMPORTANT_DATA[t.name] || "");
+                const totalSets = allQs.length > 0 ? Math.ceil(allQs.length / 50) : 0;
+                const key = `important_${t.name}`;
+                const attemptsForTopic = this.attempts[key] || {};
+                const totalAttempts = Object.values(attemptsForTopic).reduce((sum, arr) => sum + arr.length, 0);
+                const badgeCls = totalAttempts > 0 ? 'done' : (totalSets > 0 ? 'ready' : 'empty');
+                const badgeTxt = totalAttempts > 0 ? `${totalAttempts} Attempt${totalAttempts > 1 ? 's' : ''}` : (totalSets > 0 ? 'Not Started' : 'No Qs Yet');
+                return `<div class="topic-card" style="--tc:${t.color}" onclick="app.showImportantSets('${t.name.replace(/'/g,"\\'")}')">
+                    <span class="tc-num">#${idx + 1}</span>
+                    <span class="tc-emoji">${t.emoji}</span>
+                    <div class="tc-name">${t.name.toUpperCase()}</div>
+                    <span class="tc-badge ${badgeCls}">${badgeTxt}</span>
+                </div>`;
+            }).join('');
+        } else {
+            const year = yearOrKey;
+            document.getElementById('year-screen-title').innerText = `📅 CURRENT AFFAIRS ${year}`;
             grid.innerHTML = MONTHS.map(month => {
                 const allQs = this.parseData(CA_DATA[year][month] || "");
                 const totalSets = allQs.length > 0 ? Math.ceil(allQs.length / 50) : 0;
@@ -22652,7 +22823,35 @@ const app = {
                     <div class="attempt-badge ${totalAttempts > 0 ? 'has-attempts' : 'no-attempts'}">${totalAttempts > 0 ? totalAttempts + ' Attempt' + (totalAttempts > 1 ? 's' : '') : (totalSets > 0 ? 'Not Started' : 'Coming Soon')}</div>
                 </div>`;
             }).join('');
-        });
+        }
+    },
+
+    showImportantSets(topic) {
+        this.currentYear = 'important';
+        this.currentMonth = topic;
+        const allQs = this.parseData(IMPORTANT_DATA[topic] || "");
+        this.hideScreens();
+        document.getElementById('screen-sets').classList.add('active');
+        document.getElementById('set-title').innerText = topic.toUpperCase();
+        const container = document.getElementById('set-list-container');
+        container.innerHTML = '';
+        if (allQs.length === 0) {
+            container.innerHTML = '<p style="color:var(--muted); text-align:center; grid-column:1/-1; padding:30px 0;">No questions available yet. Paste questions in IMPORTANT_DATA["' + topic + '"] to begin!</p>';
+            return;
+        }
+        const key = `important_${topic}`;
+        for (let i = 0; i < allQs.length; i += 50) {
+            const setNum = (i / 50) + 1;
+            const chunk = allQs.slice(i, i + 50);
+            const setAttempts = (this.attempts[key] && this.attempts[key][setNum]) ? this.attempts[key][setNum] : [];
+            const btn = document.createElement('div');
+            btn.className = 'set-card';
+            btn.onclick = () => app.openSetModal('important', topic, setNum, chunk);
+            btn.innerHTML = `<h3>SET ${setNum}</h3>
+                <div class="set-info">Q ${i + 1}–${Math.min(i + 50, allQs.length)}</div>
+                <div class="attempt-badge ${setAttempts.length > 0 ? 'has-attempts' : 'no-attempts'}">${setAttempts.length > 0 ? `${setAttempts.length} Attempt${setAttempts.length > 1 ? 's' : ''}` : 'Not Attempted'}</div>`;
+            container.appendChild(btn);
+        }
     },
 
     showMonthSets(year, month) {
@@ -23117,12 +23316,19 @@ const app = {
 
     hideScreens() { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); },
 
+    goBackFromSets() {
+        if (this.currentYear === 'important') {
+            this.showYearScreen('important');
+        } else {
+            this.showYearScreen(this.currentYear);
+        }
+    },
+
     goHome() {
         this.hideScreens();
         document.getElementById('screen-home').classList.add('active');
         clearInterval(this.interval);
         document.getElementById('timer').style.display = 'none';
-        this.renderYearGrids();
         this.updateAuxGrids();
     }
 };
