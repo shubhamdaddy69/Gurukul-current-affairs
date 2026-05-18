@@ -190,46 +190,48 @@
     #test-header-name { font-family: 'Orbitron'; font-size: 0.75rem; color: var(--sky); }
     .test-actions { display: flex; gap: 8px; flex-wrap: wrap; }
     .action-btn {
-        padding: 7px 14px;
+        padding: 8px 16px;
         border-radius: 8px;
-        border: 1px solid var(--border);
-        background: var(--card);
-        color: var(--text);
+        border: 2px solid;
         font-size: 0.72rem;
         cursor: pointer;
         font-family: 'Orbitron';
         transition: all 0.2s;
+        font-weight: 700;
     }
-    .action-btn:hover { border-color: var(--sky); color: var(--sky); }
-    .action-btn.warn { border-color: var(--err); color: var(--err); }
-    .action-btn.warn:hover { background: rgba(248,113,113,0.1); }
+    .action-btn:hover { opacity: 0.85; }
+    .action-btn.warn { background: rgba(248,113,113,0.15); border-color: var(--err); color: var(--err); }
+    .action-btn.warn:hover { background: rgba(248,113,113,0.25); }
 
     #exam-tag-display { font-size: 0.7rem; color: var(--muted); background: var(--surface); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); }
     .instruction-box { background: rgba(240,224,64,0.08); border: 1px solid rgba(240,224,64,0.3); border-radius: 8px; padding: 10px 14px; font-size: 0.8rem; color: var(--neon-yellow); margin-bottom: 12px; }
 
     .q-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
-    .q-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    #q-prog { font-family: 'Orbitron'; font-size: 0.8rem; color: var(--neon-yellow); }
+    .q-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    #q-prog { font-family: 'Orbitron'; font-size: 0.8rem; color: var(--neon-yellow); white-space: nowrap; flex-shrink: 0; }
     #q-text { font-size: 1rem; line-height: 1.7; color: #ffffff; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0px; }
+    .q-header-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
+    .q-header-row #q-prog { padding-top: 2px; }
 
     .opt-btn {
         display: block; width: 100%;
         text-align: left;
-        padding: 12px 16px;
-        background: var(--surface);
-        border: 1px solid var(--border);
+        padding: 13px 16px;
+        background: #1a1a2e;
+        border: 1.5px solid #3a3a5c;
         border-radius: 10px;
-        color: var(--text);
-        font-size: 0.92rem;
+        color: #e8e8ff;
+        font-size: 0.95rem;
         cursor: pointer;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         transition: all 0.2s;
+        font-weight: 500;
     }
-    .opt-btn:hover { border-color: var(--sky); background: rgba(56,189,248,0.05); }
-    .opt-btn.selected { border-color: var(--sky); background: rgba(56,189,248,0.12); color: var(--sky); }
-    .opt-btn.correct-ans { border-color: #4ade80; background: rgba(74,222,128,0.15); color: #4ade80; font-weight: 700; cursor: not-allowed; }
-    .opt-btn.wrong-ans { border-color: #f87171; background: rgba(248,113,113,0.15); color: #f87171; font-weight: 700; cursor: not-allowed; }
-    .opt-btn.locked { cursor: not-allowed; opacity: 0.6; }
+    .opt-btn:hover { border-color: var(--sky); background: rgba(56,189,248,0.1); color: #fff; }
+    .opt-btn.selected { border-color: var(--sky); background: rgba(56,189,248,0.18); color: #7dd3fc; }
+    .opt-btn.correct-ans { border-color: #4ade80; background: rgba(74,222,128,0.22); color: #86efac; font-weight: 700; cursor: not-allowed; }
+    .opt-btn.wrong-ans { border-color: #f87171; background: rgba(248,113,113,0.22); color: #fca5a5; font-weight: 700; cursor: not-allowed; }
+    .opt-btn.locked { cursor: not-allowed; opacity: 0.75; }
     .ans-feedback {
         margin-top: 12px; padding: 12px 16px; border-radius: 10px;
         font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 8px;
@@ -239,9 +241,15 @@
 
     /* NAV BUTTONS */
     .nav-row { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
-    .nav-btn { flex: 1; padding: 10px 4px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 0.65rem; cursor: pointer; font-family: 'Orbitron'; transition: all 0.2s; text-align: center; white-space: nowrap; min-width: 0; }
-    .nav-btn:hover { border-color: var(--sky); }
-    .nav-btn.submit { border-color: var(--succ); color: var(--succ); }
+    .nav-btn { flex: 1; padding: 11px 4px; border-radius: 10px; border: 2px solid; font-size: 0.65rem; cursor: pointer; font-family: 'Orbitron'; transition: all 0.2s; text-align: center; white-space: nowrap; min-width: 0; font-weight: 700; }
+    .nav-btn.submit { background: #166534; border-color: #4ade80; color: #4ade80; }
+    .nav-btn.submit:hover { background: #15803d; }
+    .nav-btn.save-nav { background: #713f12; border-color: #fbbf24; color: #fbbf24; }
+    .nav-btn.save-nav:hover { background: #92400e; }
+    .nav-btn.prev { background: #1e3a5f; border-color: #38bdf8; color: #38bdf8; }
+    .nav-btn.prev:hover { background: #1d4ed8; }
+    .nav-btn.next { background: #4c1d95; border-color: #c084fc; color: #c084fc; }
+    .nav-btn.next:hover { background: #6d28d9; }
     #pause-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:9999; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
     #pause-overlay.active { display:flex; }
     #pause-overlay h2 { color:#fff; font-family:'Orbitron'; font-size:1.4rem; letter-spacing:3px; margin:0; }
@@ -250,7 +258,7 @@
     #resume-btn:hover { background:#0369a1; }
     #pause-btn { background:#f59e0b; color:#fff; border:none; padding:6px 14px; border-radius:8px; font-family:'Orbitron'; font-size:0.65rem; font-weight:bold; cursor:pointer; }
     #pause-btn:hover { background:#d97706; }
-    .nav-btn.submit:hover { background: rgba(74,222,128,0.1); }
+    /* action-btn colors */
     #star-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--muted); transition: color 0.2s; }
     #star-btn.active { color: var(--neon-yellow); }
 
@@ -432,30 +440,29 @@
 <div class="screen" id="screen-test">
     <div id="test-header">
         <div style="display:flex;align-items:center;gap:8px;">
-            <button id="header-save-btn" class="action-btn" onclick="app.saveAndGoToSaved()" style="border-color:var(--neon-yellow);color:var(--neon-yellow);font-size:0.65rem;">☆ SAVE</button>
-            <button class="action-btn" style="background:#4285f4;color:#fff;border:none;" onclick="app.openGoogle()">🔍 GOOGLE</button>
+            <button class="action-btn" style="background:#dc2626;color:#fff;border-color:#dc2626;" onclick="app.goHome()">🏠 HOME</button>
+            <button class="action-btn" style="background:#4285f4;color:#fff;border-color:#4285f4;" onclick="app.openGoogle()">🔍 GOOGLE</button>
         </div>
         <div class="test-actions">
-            <button id="toggle-palette-btn" class="action-btn" onclick="app.togglePalette()">PALETTE</button>
+            <button id="toggle-palette-btn" class="action-btn" style="background:#7c3aed;color:#e9d5ff;border-color:#7c3aed;" onclick="app.togglePalette()">PALETTE</button>
         </div>
     </div>
 
     <div class="q-card">
-        <div class="q-meta">
-            <span id="q-prog">Q1/50</span>
-            <button id="star-btn" onclick="app.toggleBookmark()" title="Save Question" style="background:none;border:1px solid var(--border);border-radius:8px;padding:5px 12px;cursor:pointer;color:var(--muted);font-family:'Orbitron';font-size:0.65rem;transition:all 0.2s;display:flex;align-items:center;gap:5px;">☆ <span>SAVE</span></button>
-        </div>
         <div id="instruction-area"></div>
-        <div id="q-text"></div>
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+            <span id="q-prog" style="white-space:nowrap;padding-top:3px;">Q1</span>
+            <div id="q-text"></div>
+        </div>
     </div>
 
     <div id="options-area"></div>
 
     <div class="nav-row" style="margin-top:14px;">
-        <button class="nav-btn" onclick="app.prev()">← PREV</button>
-        <button class="nav-btn" onclick="app.clearResponse()">CLEAR</button>
-        <button class="nav-btn" onclick="app.next()">NEXT →</button>
-        <button class="nav-btn submit" onclick="app.submit()">SUBMIT TEST</button>
+        <button class="nav-btn submit" onclick="app.submit()">SUBMIT</button>
+        <button class="nav-btn save-nav" id="nav-save-btn" onclick="app.toggleBookmark()">☆ SAVE</button>
+        <button class="nav-btn prev" onclick="app.prev()">← PREV</button>
+        <button class="nav-btn next" onclick="app.next()">NEXT →</button>
     </div>
 
     <div id="palette-container">
@@ -25238,17 +25245,26 @@ const app = {
 
     renderQuestion() {
         const q = this.questions[this.currentIdx];
-        document.getElementById('q-prog').innerText = `Q${this.currentIdx + 1}/${this.questions.length}`;
+        document.getElementById('q-prog').innerText = `Q${this.currentIdx + 1}`;
         document.getElementById('instruction-area').innerHTML = q.instr ? `<div class="instruction-box">${q.instr}</div>` : '';
         document.getElementById('q-text').innerText = q.q;
 
         const isSaved = this.savedItems[`${this.currentYear}_${this.currentMonth}`] &&
             this.savedItems[`${this.currentYear}_${this.currentMonth}`].some(x => x.q === q.q);
         const starBtn = document.getElementById('star-btn');
-        starBtn.classList.toggle('active', isSaved);
-        starBtn.innerHTML = isSaved ? '★ <span>SAVED</span>' : '☆ <span>SAVE</span>';
-        starBtn.style.color = isSaved ? 'var(--neon-yellow)' : 'var(--muted)';
-        starBtn.style.borderColor = isSaved ? 'var(--neon-yellow)' : 'var(--border)';
+        if (starBtn) {
+            starBtn.classList.toggle('active', isSaved);
+            starBtn.innerHTML = isSaved ? '★ <span>SAVED</span>' : '☆ <span>SAVE</span>';
+            starBtn.style.color = isSaved ? 'var(--neon-yellow)' : 'var(--muted)';
+            starBtn.style.borderColor = isSaved ? 'var(--neon-yellow)' : 'var(--border)';
+        }
+
+        const navSaveBtn = document.getElementById('nav-save-btn');
+        if (navSaveBtn) {
+            navSaveBtn.innerText = isSaved ? '★ SAVED' : '☆ SAVE';
+            navSaveBtn.style.borderColor = isSaved ? '#4ade80' : '#fbbf24';
+            navSaveBtn.style.color = isSaved ? '#4ade80' : '#fbbf24';
+        }
 
         const headerSaveBtn = document.getElementById('header-save-btn');
         if (headerSaveBtn) {
@@ -25263,33 +25279,20 @@ const app = {
         let optsHtml = q.options.map((opt, i) => {
             if (hasAnswered) {
                 let cls = 'locked';
-                let suffix = '';
                 if (i === q.correct && i === userAns) {
                     cls = 'correct-ans locked';
-                    suffix = ' <span style="float:right;font-size:0.75rem;">✓ Correct!</span>';
                 } else if (i === q.correct) {
                     cls = 'correct-ans locked';
-                    suffix = ' <span style="float:right;font-size:0.75rem;">✓ Correct Answer</span>';
                 } else if (i === userAns) {
                     cls = 'wrong-ans locked';
-                    suffix = ' <span style="float:right;font-size:0.75rem;">✗ Your Answer</span>';
                 }
-                return `<button class="opt-btn ${cls}" disabled><b>${String.fromCharCode(65 + i)}.</b> ${opt}${suffix}</button>`;
+                return `<button class="opt-btn ${cls}" disabled><b>${String.fromCharCode(65 + i)}.</b> ${opt}</button>`;
             } else {
                 return `<button class="opt-btn" onclick="app.select(${i})"><b>${String.fromCharCode(65 + i)}.</b> ${opt}</button>`;
             }
         }).join('');
 
-        if (hasAnswered) {
-            const isCorrect = userAns === q.correct;
-            const correctLetter = String.fromCharCode(65 + q.correct);
-            const userLetter = String.fromCharCode(65 + userAns);
-            if (isCorrect) {
-                optsHtml += `<div class="ans-feedback correct">🎉 Correct! Your answer <b>(${userLetter})</b> is right.</div>`;
-            } else {
-                optsHtml += `<div class="ans-feedback wrong">✗ Wrong! You chose <b>(${userLetter})</b> — Correct answer is <b>(${correctLetter}) ${q.options[q.correct]}</b></div>`;
-            }
-        }
+        // No feedback box — user understands by color (green = correct, red = wrong)
 
         document.getElementById('options-area').innerHTML = optsHtml;
         this.renderPalette();
