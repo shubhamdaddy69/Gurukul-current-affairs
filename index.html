@@ -354,7 +354,7 @@
     <div>
         <h1>CURRENT AFFAIRS</h1>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;"><div id="timer">15:00</div><button id="pause-btn" onclick="app.pauseTest()" style="display:none;background:#f59e0b;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-family:Orbitron;font-size:0.65rem;font-weight:bold;cursor:pointer;">⏸ PAUSE</button></div>
+    <div style="display:flex;align-items:center;gap:8px;"><div id="timer">25:00</div><button id="pause-btn" onclick="app.pauseTest()" style="display:none;background:#f59e0b;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-family:Orbitron;font-size:0.65rem;font-weight:bold;cursor:pointer;">⏸ PAUSE</button></div>
 </div>
 <div id="pause-overlay">
     <h2>⏸ PAUSED</h2>
@@ -25206,7 +25206,7 @@ const app = {
         this.visited = new Set([0]);
         this.bookmarks = new Set();
         this.currentIdx = 0;
-        this.timer = 900; // 15 minutes
+        this.timer = 1500; // 25 minutes
         this.viewMode = 'normal';
         this.hideScreens();
         document.getElementById('screen-test').classList.add('active');
@@ -25412,7 +25412,7 @@ const app = {
         this.questions.forEach((q, i) => {
             const u = this.userAns[i];
             html += `<div class="sol-box">
-                <div style="font-weight:bold; margin-bottom:10px; font-size:0.9rem;">Q.${i + 1} ${q.q}</div>
+                <div style="font-weight:bold; margin-bottom:10px; font-size:0.9rem;">Q${i + 1} ${q.q}</div>
                 ${q.options.map((o, idx) => { const col = idx === q.correct ? 'var(--succ)' : (idx === u ? 'var(--err)' : 'var(--muted)'); return `<div style="color:${col}; padding:4px 0;">${String.fromCharCode(65 + idx)}. ${o}</div>`; }).join('')}
                 <div style="margin-top:10px; font-size:0.82rem; border-top:1px solid var(--border); padding-top:10px; color:var(--muted);"><b style="color:var(--text)">EXP:</b> ${q.exp}</div>
             </div>`;
@@ -25552,7 +25552,7 @@ const app = {
             const isSaved = this.savedItems[saveKey] && this.savedItems[saveKey].some(x => x.q === q.q);
             html += `<div class="sol-box">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
-                    <div style="font-weight:bold; font-size:0.9rem; flex:1;">Q.${i + 1} ${q.q}${typeLabel}</div>
+                    <div style="font-weight:bold; font-size:0.9rem; flex:1;">Q${i + 1} ${q.q}${typeLabel}</div>
                     <button onclick="app.toggleSaveFromReview('${saveKey}', ${i})" style="background:none; border:1px solid ${isSaved ? 'var(--neon-yellow)' : 'var(--border)'}; border-radius:6px; padding:3px 8px; cursor:pointer; color:${isSaved ? 'var(--neon-yellow)' : 'var(--muted)'}; font-family:'Orbitron'; font-size:0.55rem; margin-left:8px; white-space:nowrap;" id="save-btn-review-${i}">${isSaved ? '★ SAVED' : '☆ SAVE'}</button>
                 </div>
                 ${q.options.map((o, idx) => `<div style="color:${idx === q.correct ? 'var(--succ)' : 'var(--muted)'}; padding:4px 0;">${String.fromCharCode(65 + idx)}. ${o}</div>`).join('')}
@@ -25639,7 +25639,7 @@ const app = {
             const statusText = this.viewMode === 'normal' ? `<span style="font-size:9px; color:${statusColor};">${u === undefined ? 'UA' : (isCorrect ? 'CORRECT' : 'INCORRECT')}</span>` : '';
             html += `<div style="border:1px solid #eee; padding:10px; page-break-inside:avoid; border-left:4px solid ${this.viewMode === 'normal' ? statusColor : '#2e7d32'};">
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-size:11px; color:#666;">[${q.exam || 'SSC EXAM'}]</span>${statusText}</div>
-                <div style="font-size:13px; margin-bottom:10px; font-weight:bold;">Q.${i + 1} ${q.q}</div>
+                <div style="font-size:13px; margin-bottom:10px; font-weight:bold;">Q${i + 1} ${q.q}</div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">${optHtml}</div>
                 <div style="font-size:10px; padding:6px; background:#f9f9f9; border:1px solid #ddd; margin-top:5px;">
                     <b>ANS: ${String.fromCharCode(65 + q.correct)}</b>${this.viewMode === 'normal' && u !== undefined ? ` | YOUR ANS: ${String.fromCharCode(65 + u)}` : ''}<br>EXP: ${q.exp}
