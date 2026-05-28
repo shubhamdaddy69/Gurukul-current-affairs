@@ -32041,10 +32041,11 @@ const app = {
             const lines = block.split('\n').map(l => l.trim()).filter(l => l);
             let qText = "", options = [], ans = "", exp = "", exam = "", instr = "";
             lines.forEach(l => {
-                if (l.startsWith('A.')) options[0] = l.slice(2).trim();
-                else if (l.startsWith('B.')) options[1] = l.slice(2).trim();
-                else if (l.startsWith('C.')) options[2] = l.slice(2).trim();
-                else if (l.startsWith('D.')) options[3] = l.slice(2).trim();
+                // Support both "A." and "A)" option formats
+                if (/^A[.)]\s/.test(l)) options[0] = l.slice(2).trim();
+                else if (/^B[.)]\s/.test(l)) options[1] = l.slice(2).trim();
+                else if (/^C[.)]\s/.test(l)) options[2] = l.slice(2).trim();
+                else if (/^D[.)]\s/.test(l)) options[3] = l.slice(2).trim();
                 else if (l.startsWith('Ans:')) ans = l.slice(4).trim().toUpperCase();
                 else if (l.startsWith('Exp:')) exp = l.slice(4).trim();
                 else if (l.startsWith('Exam:')) exam = l.slice(5).trim();
