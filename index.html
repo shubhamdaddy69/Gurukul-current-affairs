@@ -288,57 +288,53 @@
     .legend span { display: flex; align-items: center; gap: 5px; }
     .legend .dot { width: 12px; height: 12px; border-radius: 3px; }
 
-    /* BEAUTIFUL IMPORTANT TOPIC CARDS */
+    /* IMPORTANT TOPIC CARDS – row-wise linear list */
     .topic-card {
         background: var(--card);
         border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 18px 14px 14px;
+        border-left: 4px solid var(--tc);
+        border-radius: 10px;
+        padding: 13px 16px;
         cursor: pointer;
-        transition: all 0.22s cubic-bezier(.4,0,.2,1);
-        text-align: center;
+        transition: all 0.18s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
         position: relative;
-        overflow: hidden;
-    }
-    .topic-card::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 3px;
-        background: var(--tc);
-        border-radius: 14px 14px 0 0;
     }
     .topic-card:hover {
+        background: rgba(255,255,255,0.04);
         border-color: var(--tc);
-        transform: translateY(-3px);
-        box-shadow: 0 6px 24px rgba(0,0,0,0.4), 0 0 0 1px var(--tc);
+        transform: translateX(3px);
+        box-shadow: 0 2px 14px rgba(0,0,0,0.3);
     }
-    .topic-card .tc-emoji { font-size: 1.6rem; margin-bottom: 8px; display: block; }
+    .topic-card .tc-emoji { font-size: 1.3rem; flex-shrink: 0; }
     .topic-card .tc-name {
-        font-family: 'Orbitron';
-        font-size: 0.62rem;
-        letter-spacing: 1px;
-        color: var(--tc);
-        margin-bottom: 6px;
-        line-height: 1.4;
+        font-family: 'Inter';
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #ffffff;
+        flex: 1;
+        line-height: 1.3;
     }
     .topic-card .tc-badge {
-        font-size: 0.6rem;
-        padding: 3px 8px;
+        font-size: 0.58rem;
+        padding: 3px 9px;
         border-radius: 20px;
-        display: inline-block;
-        margin-top: 4px;
         border: 1px solid;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
     .tc-badge.ready { background: rgba(74,222,128,0.12); color: var(--succ); border-color: rgba(74,222,128,0.3); }
     .tc-badge.done  { background: rgba(240,224,64,0.12); color: var(--neon-yellow); border-color: rgba(240,224,64,0.3); }
     .tc-badge.empty { background: rgba(100,116,139,0.1); color: var(--muted); border-color: var(--border); }
     .topic-card .tc-num {
-        position: absolute;
-        top: 8px; right: 10px;
-        font-size: 0.55rem;
-        color: var(--muted);
+        font-size: 0.6rem;
+        color: var(--tc);
         font-family: 'Orbitron';
+        font-weight: 700;
+        flex-shrink: 0;
+        min-width: 22px;
     }
 
     @media(max-width:600px) {
@@ -23882,6 +23878,7 @@ const IMPORTANT_TOPICS_LIST = [
     { key: "Modi cabinet portfolio",   name: "Modi Cabinet Portfolio",   emoji: "📋",  color: "#fb923c" },
     { key: "High court judges",        name: "High Court Judges",        emoji: "⚖️",  color: "#fb7185" },
     { key: "first in india and world", name: "First in India & World",   emoji: "🥇",  color: "#4ade80" },
+    { key: "Books and authors",        name: "Books & Authors",          emoji: "📚",  color: "#a78bfa" },
     { key: "Sports",                   name: "Sports",                   emoji: "🏆",  color: "#fbbf24" },
     { key: "Awards & Honours",         name: "Awards & Honours",         emoji: "🎖️",  color: "#e879f9" },
     { key: "Defence",                  name: "Defence",                  emoji: "🛡️",  color: "#60a5fa" },
@@ -23889,7 +23886,6 @@ const IMPORTANT_TOPICS_LIST = [
     { key: "International",            name: "International",            emoji: "🌐",  color: "#f97316" },
     { key: "Summits & Meetings",       name: "Summits & Meetings",       emoji: "🤝",  color: "#38bdf8" },
     { key: "Govt Schemes",             name: "Govt Schemes",             emoji: "📋",  color: "#fb923c" },
-    { key: "Books and authors",        name: "Books & Authors",          emoji: "📚",  color: "#a78bfa" },
     { key: "Appointments",             name: "Appointments",             emoji: "👤",  color: "#f59e0b" },
     { key: "Ranks & Reports",          name: "Ranks & Reports",          emoji: "📊",  color: "#34d399" },
     { key: "Index & Indicators",       name: "Index & Indicators",       emoji: "📉",  color: "#60a5fa" },
@@ -31493,7 +31489,8 @@ const app = {
 
         if (yearOrKey === 'important') {
             document.getElementById('year-screen-title').innerText = '⚡ IMPORTANT TOPICS';
-            grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(140px, 1fr))';
+            grid.style.gridTemplateColumns = '1fr';
+            grid.style.gap = '8px';
             grid.innerHTML = IMPORTANT_TOPICS_LIST.map((t, idx) => {
                 const allQs = this.parseData(IMPORTANT_DATA[t.key] || "");
                 const totalSets = allQs.length > 0 ? Math.ceil(allQs.length / 50) : 0;
@@ -31503,9 +31500,9 @@ const app = {
                 const badgeCls = totalAttempts > 0 ? 'done' : (totalSets > 0 ? 'ready' : 'empty');
                 const badgeTxt = totalAttempts > 0 ? `${totalAttempts} Attempt${totalAttempts > 1 ? 's' : ''}` : (totalSets > 0 ? 'Not Started' : 'No Qs Yet');
                 return `<div class="topic-card" style="--tc:${t.color}" onclick="app.showImportantSets('${t.key.replace(/'/g,"\\'")}')">
-                    <span class="tc-num">#${idx + 1}</span>
+                    <span class="tc-num">${idx + 1}</span>
                     <span class="tc-emoji">${t.emoji}</span>
-                    <div class="tc-name">${t.name.toUpperCase()}</div>
+                    <div class="tc-name">${t.name}</div>
                     <span class="tc-badge ${badgeCls}">${badgeTxt}</span>
                 </div>`;
             }).join('');
@@ -31920,6 +31917,17 @@ const app = {
         const bEmpty = document.getElementById('blunder-empty');
         const sEmpty = document.getElementById('saved-empty');
 
+        // Only show keys belonging to this app: "YYYY_MonthName" or "important_..."
+        const validMonths = new Set(["January","February","March","April","May","June","July","August","September","October","November","December"]);
+        const isValidKey = (key) => {
+            if (key.startsWith('important_')) return true;
+            const parts = key.split('_');
+            if (parts.length < 2) return false;
+            const yr = parts[0];
+            const mo = parts.slice(1).join('_');
+            return /^\d{4}$/.test(yr) && validMonths.has(mo);
+        };
+
         // Sort keys chronologically (year_month format)
         const monthOrder = {"January":1,"February":2,"March":3,"April":4,"May":5,"June":6,"July":7,"August":8,"September":9,"October":10,"November":11,"December":12};
         const sortKeys = (keys) => keys.sort((a, b) => {
@@ -31929,8 +31937,8 @@ const app = {
             return (monthOrder[moA] || 99) - (monthOrder[moB] || 99);
         });
 
-        const bKeys = sortKeys(Object.keys(this.blunders).filter(k => this.blunders[k].length > 0));
-        const sKeys = sortKeys(Object.keys(this.savedItems).filter(k => this.savedItems[k].length > 0));
+        const bKeys = sortKeys(Object.keys(this.blunders).filter(k => isValidKey(k) && this.blunders[k].length > 0));
+        const sKeys = sortKeys(Object.keys(this.savedItems).filter(k => isValidKey(k) && this.savedItems[k].length > 0));
 
         if (bGrid) {
             bGrid.innerHTML = bKeys.map(key => {
@@ -32112,11 +32120,20 @@ const app = {
         }
     },
 
-    goHome() {
+    goHome(skipConfirm) {
+        const isInTest = document.getElementById('screen-test').classList.contains('active');
+        if (isInTest && !skipConfirm) {
+            if (!confirm('Are you sure you want to go home? Your current test progress will be lost.')) return;
+        }
         this.hideScreens();
         document.getElementById('screen-home').classList.add('active');
         clearInterval(this.interval);
         document.getElementById('timer').style.display = 'none';
+        document.getElementById('pause-btn').style.display = 'none';
+        document.getElementById('pause-btn').textContent = '⏸ PAUSE';
+        document.getElementById('pause-btn').onclick = () => this.pauseTest();
+        const pauseOverlay = document.getElementById('pause-overlay');
+        if (pauseOverlay) pauseOverlay.classList.remove('active');
         this.updateAuxGrids();
     }
 };
