@@ -23872,57 +23872,60 @@ CA_DATA["2026"]["December"] = ``
 // =====================================================
 // IMPORTANT TOPICS — EDIT NAMES & EMOJIS HERE
 // =====================================================
+// HOW TO USE:
+//   key  → NEVER change this. It must match the IMPORTANT_DATA["key"] below.
+//   name → Change this freely anytime. It is only the display label shown in the UI.
 const IMPORTANT_TOPICS_LIST = [
-    { name: "Pm and Presidents",               emoji: "⚖️",  color: "#f59e0b" },
-    { name: "Economy",              emoji: "📈",  color: "#34d399" },
-    { name: "History",              emoji: "🏛️",  color: "#a78bfa" },
-    { name: "Geography",            emoji: "🌍",  color: "#38bdf8" },
-    { name: "Science & Tech",       emoji: "🔬",  color: "#fb7185" },
-    { name: "Environment",          emoji: "🌿",  color: "#4ade80" },
-    { name: "Sports",               emoji: "🏆",  color: "#fbbf24" },
-    { name: "Awards & Honours",     emoji: "🎖️",  color: "#e879f9" },
-    { name: "Defence",              emoji: "🛡️",  color: "#60a5fa" },
-    { name: "Banking & Finance",    emoji: "🏦",  color: "#34d399" },
-    { name: "International",        emoji: "🌐",  color: "#f97316" },
-    { name: "Summits & Meetings",   emoji: "🤝",  color: "#38bdf8" },
-    { name: "Govt Schemes",         emoji: "📋",  color: "#fb923c" },
-    { name: "Books & Authors",      emoji: "📚",  color: "#a78bfa" },
-    { name: "Appointments",         emoji: "👤",  color: "#f59e0b" },
-    { name: "Ranks & Reports",      emoji: "📊",  color: "#34d399" },
-    { name: "Index & Indicators",   emoji: "📉",  color: "#60a5fa" },
-    { name: "Art & Culture",        emoji: "🎨",  color: "#e879f9" },
-    { name: "Social Issues",        emoji: "🧩",  color: "#fb7185" },
-    { name: "Agriculture",          emoji: "🌾",  color: "#4ade80" },
-    { name: "Health",               emoji: "🏥",  color: "#fb923c" },
-    { name: "Space",                emoji: "🚀",  color: "#60a5fa" },
-    { name: "Disasters",            emoji: "⚠️",  color: "#f87171" },
-    { name: "Energy",               emoji: "⚡",  color: "#fbbf24" },
-    { name: "Transport",            emoji: "🚆",  color: "#38bdf8" },
-    { name: "Topic 26",             emoji: "📌",  color: "#a78bfa" },
-    { name: "Topic 27",             emoji: "📌",  color: "#34d399" },
-    { name: "Topic 28",             emoji: "📌",  color: "#fb7185" },
-    { name: "Topic 29",             emoji: "📌",  color: "#f59e0b" },
-    { name: "Topic 30",             emoji: "📌",  color: "#60a5fa" },
-    { name: "Topic 31",             emoji: "📌",  color: "#e879f9" },
-    { name: "Topic 32",             emoji: "📌",  color: "#4ade80" },
-    { name: "Topic 33",             emoji: "📌",  color: "#fb923c" },
-    { name: "Topic 34",             emoji: "📌",  color: "#38bdf8" },
-    { name: "Topic 35",             emoji: "📌",  color: "#a78bfa" },
-    { name: "Topic 36",             emoji: "📌",  color: "#fbbf24" },
-    { name: "Topic 37",             emoji: "📌",  color: "#34d399" },
-    { name: "Topic 38",             emoji: "📌",  color: "#fb7185" },
-    { name: "Topic 39",             emoji: "📌",  color: "#60a5fa" },
-    { name: "Topic 40",             emoji: "📌",  color: "#f59e0b" },
-    { name: "Topic 41",             emoji: "📌",  color: "#e879f9" },
-    { name: "Topic 42",             emoji: "📌",  color: "#4ade80" },
-    { name: "Topic 43",             emoji: "📌",  color: "#fb923c" },
-    { name: "Topic 44",             emoji: "📌",  color: "#38bdf8" },
-    { name: "Topic 45",             emoji: "📌",  color: "#a78bfa" },
-    { name: "Topic 46",             emoji: "📌",  color: "#fbbf24" },
-    { name: "Topic 47",             emoji: "📌",  color: "#34d399" },
-    { name: "Topic 48",             emoji: "📌",  color: "#fb7185" },
-    { name: "Topic 49",             emoji: "📌",  color: "#60a5fa" },
-    { name: "Topic 50",             emoji: "📌",  color: "#f59e0b" },
+    { key: "pm and presidents",        name: "PM & Presidents",          emoji: "⚖️",  color: "#f59e0b" },
+    { key: "cm and governor",          name: "CM & Governors",           emoji: "🏛️",  color: "#a78bfa" },
+    { key: "Appointments and heads",   name: "Appointments & Heads",     emoji: "👤",  color: "#38bdf8" },
+    { key: "Modi cabinet portfolio",   name: "Modi Cabinet Portfolio",   emoji: "📋",  color: "#fb923c" },
+    { key: "High court judges",        name: "High Court Judges",        emoji: "⚖️",  color: "#fb7185" },
+    { key: "first in india and world", name: "First in India & World",   emoji: "🥇",  color: "#4ade80" },
+    { key: "Sports",                   name: "Sports",                   emoji: "🏆",  color: "#fbbf24" },
+    { key: "Awards & Honours",         name: "Awards & Honours",         emoji: "🎖️",  color: "#e879f9" },
+    { key: "Defence",                  name: "Defence",                  emoji: "🛡️",  color: "#60a5fa" },
+    { key: "Banking & Finance",        name: "Banking & Finance",        emoji: "🏦",  color: "#34d399" },
+    { key: "International",            name: "International",            emoji: "🌐",  color: "#f97316" },
+    { key: "Summits & Meetings",       name: "Summits & Meetings",       emoji: "🤝",  color: "#38bdf8" },
+    { key: "Govt Schemes",             name: "Govt Schemes",             emoji: "📋",  color: "#fb923c" },
+    { key: "Books and authors",        name: "Books & Authors",          emoji: "📚",  color: "#a78bfa" },
+    { key: "Appointments",             name: "Appointments",             emoji: "👤",  color: "#f59e0b" },
+    { key: "Ranks & Reports",          name: "Ranks & Reports",          emoji: "📊",  color: "#34d399" },
+    { key: "Index & Indicators",       name: "Index & Indicators",       emoji: "📉",  color: "#60a5fa" },
+    { key: "Art & Culture",            name: "Art & Culture",            emoji: "🎨",  color: "#e879f9" },
+    { key: "Social Issues",            name: "Social Issues",            emoji: "🧩",  color: "#fb7185" },
+    { key: "Agriculture",              name: "Agriculture",              emoji: "🌾",  color: "#4ade80" },
+    { key: "Health",                   name: "Health",                   emoji: "🏥",  color: "#fb923c" },
+    { key: "Space",                    name: "Space",                    emoji: "🚀",  color: "#60a5fa" },
+    { key: "Disasters",                name: "Disasters",                emoji: "⚠️",  color: "#f87171" },
+    { key: "Energy",                   name: "Energy",                   emoji: "⚡",  color: "#fbbf24" },
+    { key: "Transport",                name: "Transport",                emoji: "🚆",  color: "#38bdf8" },
+    { key: "Topic 26",                 name: "Topic 26",                 emoji: "📌",  color: "#a78bfa" },
+    { key: "Topic 27",                 name: "Topic 27",                 emoji: "📌",  color: "#34d399" },
+    { key: "Topic 28",                 name: "Topic 28",                 emoji: "📌",  color: "#fb7185" },
+    { key: "Topic 29",                 name: "Topic 29",                 emoji: "📌",  color: "#f59e0b" },
+    { key: "Topic 30",                 name: "Topic 30",                 emoji: "📌",  color: "#60a5fa" },
+    { key: "Topic 31",                 name: "Topic 31",                 emoji: "📌",  color: "#e879f9" },
+    { key: "Topic 32",                 name: "Topic 32",                 emoji: "📌",  color: "#4ade80" },
+    { key: "Topic 33",                 name: "Topic 33",                 emoji: "📌",  color: "#fb923c" },
+    { key: "Topic 34",                 name: "Topic 34",                 emoji: "📌",  color: "#38bdf8" },
+    { key: "Topic 35",                 name: "Topic 35",                 emoji: "📌",  color: "#a78bfa" },
+    { key: "Topic 36",                 name: "Topic 36",                 emoji: "📌",  color: "#fbbf24" },
+    { key: "Topic 37",                 name: "Topic 37",                 emoji: "📌",  color: "#34d399" },
+    { key: "Topic 38",                 name: "Topic 38",                 emoji: "📌",  color: "#fb7185" },
+    { key: "Topic 39",                 name: "Topic 39",                 emoji: "📌",  color: "#60a5fa" },
+    { key: "Topic 40",                 name: "Topic 40",                 emoji: "📌",  color: "#f59e0b" },
+    { key: "Topic 41",                 name: "Topic 41",                 emoji: "📌",  color: "#e879f9" },
+    { key: "Topic 42",                 name: "Topic 42",                 emoji: "📌",  color: "#4ade80" },
+    { key: "Topic 43",                 name: "Topic 43",                 emoji: "📌",  color: "#fb923c" },
+    { key: "Topic 44",                 name: "Topic 44",                 emoji: "📌",  color: "#38bdf8" },
+    { key: "Topic 45",                 name: "Topic 45",                 emoji: "📌",  color: "#a78bfa" },
+    { key: "Topic 46",                 name: "Topic 46",                 emoji: "📌",  color: "#fbbf24" },
+    { key: "Topic 47",                 name: "Topic 47",                 emoji: "📌",  color: "#34d399" },
+    { key: "Topic 48",                 name: "Topic 48",                 emoji: "📌",  color: "#fb7185" },
+    { key: "Topic 49",                 name: "Topic 49",                 emoji: "📌",  color: "#60a5fa" },
+    { key: "Topic 50",                 name: "Topic 50",                 emoji: "📌",  color: "#f59e0b" },
 ];
 
 const IMPORTANT_DATA = {};
@@ -31492,14 +31495,14 @@ const app = {
             document.getElementById('year-screen-title').innerText = '⚡ IMPORTANT TOPICS';
             grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(140px, 1fr))';
             grid.innerHTML = IMPORTANT_TOPICS_LIST.map((t, idx) => {
-                const allQs = this.parseData(IMPORTANT_DATA[t.name] || "");
+                const allQs = this.parseData(IMPORTANT_DATA[t.key] || "");
                 const totalSets = allQs.length > 0 ? Math.ceil(allQs.length / 50) : 0;
-                const key = `important_${t.name}`;
+                const key = `important_${t.key}`;
                 const attemptsForTopic = this.attempts[key] || {};
                 const totalAttempts = Object.values(attemptsForTopic).reduce((sum, arr) => sum + arr.length, 0);
                 const badgeCls = totalAttempts > 0 ? 'done' : (totalSets > 0 ? 'ready' : 'empty');
                 const badgeTxt = totalAttempts > 0 ? `${totalAttempts} Attempt${totalAttempts > 1 ? 's' : ''}` : (totalSets > 0 ? 'Not Started' : 'No Qs Yet');
-                return `<div class="topic-card" style="--tc:${t.color}" onclick="app.showImportantSets('${t.name.replace(/'/g,"\\'")}')">
+                return `<div class="topic-card" style="--tc:${t.color}" onclick="app.showImportantSets('${t.key.replace(/'/g,"\\'")}')">
                     <span class="tc-num">#${idx + 1}</span>
                     <span class="tc-emoji">${t.emoji}</span>
                     <div class="tc-name">${t.name.toUpperCase()}</div>
@@ -31524,27 +31527,28 @@ const app = {
         }
     },
 
-    showImportantSets(topic) {
+    showImportantSets(topicKey) {
         this.currentYear = 'important';
-        this.currentMonth = topic;
-        const allQs = this.parseData(IMPORTANT_DATA[topic] || "");
+        this.currentMonth = topicKey;
+        const allQs = this.parseData(IMPORTANT_DATA[topicKey] || "");
         this.hideScreens();
         document.getElementById('screen-sets').classList.add('active');
-        document.getElementById('set-title').innerText = topic.toUpperCase();
+        const topicMeta = IMPORTANT_TOPICS_LIST.find(t => t.key === topicKey);
+        document.getElementById('set-title').innerText = (topicMeta ? topicMeta.name : topicKey).toUpperCase();
         const container = document.getElementById('set-list-container');
         container.innerHTML = '';
         if (allQs.length === 0) {
-            container.innerHTML = '<p style="color:var(--muted); text-align:center; grid-column:1/-1; padding:30px 0;">No questions available yet. Paste questions in IMPORTANT_DATA["' + topic + '"] to begin!</p>';
+            container.innerHTML = '<p style="color:var(--muted); text-align:center; grid-column:1/-1; padding:30px 0;">No questions available yet. Paste questions in IMPORTANT_DATA["' + topicKey + '"] to begin!</p>';
             return;
         }
-        const key = `important_${topic}`;
+        const key = `important_${topicKey}`;
         for (let i = 0; i < allQs.length; i += 50) {
             const setNum = (i / 50) + 1;
             const chunk = allQs.slice(i, i + 50);
             const setAttempts = (this.attempts[key] && this.attempts[key][setNum]) ? this.attempts[key][setNum] : [];
             const btn = document.createElement('div');
             btn.className = 'set-card';
-            btn.onclick = () => app.openSetModal('important', topic, setNum, chunk);
+            btn.onclick = () => app.openSetModal('important', topicKey, setNum, chunk);
             btn.innerHTML = `<h3>SET ${setNum}</h3>
                 <div class="set-info">Q ${i + 1}–${Math.min(i + 50, allQs.length)}</div>
                 <div class="attempt-badge ${setAttempts.length > 0 ? 'has-attempts' : 'no-attempts'}">${setAttempts.length > 0 ? `${setAttempts.length} Attempt${setAttempts.length > 1 ? 's' : ''}` : 'Not Attempted'}</div>`;
