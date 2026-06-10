@@ -23749,23 +23749,7 @@ const IMPORTANT_DATA = {};
 // To rename a topic: change "name" in IMPORTANT_TOPICS_LIST above
 // =====================================================
 
-IMPORTANT_DATA["Books and authors"] = `
-
-Q.138 Who received the prestigious International Booker Prize 2026?
-A. Han Kang
-B. Olga Tokarczuk
-C. Yang Shuang Zi
-D. Kim Jiyoung
-Correct Answer: C
-
-Q.38   What is the name of the new Hindi book for class 9 released by NCERT under National Education Policy 2020?
-A. Ganga
-B. Yamuna
-C. Saraswati
-D. Kaveri
-Ans: A
-  
-Q.1   "On the Note" is an autobiographical portrait of which Carnatic vocalist?
+IMPORTANT_DATA["Books and authors"] = `Q.1   "On the Note" is an autobiographical portrait of which Carnatic vocalist?
 A) M.S. Subbulakshmi
 B) Sanjay Subrahmanyan
 C) T.M. Krishna
@@ -30821,43 +30805,7 @@ C. Sal Jadhav
 D. Geeta Samota
 Ans: D`;
 
-IMPORTANT_DATA["festivals"] = `
-Q.126 In which state was the traditional Panjath Nag Festival celebrated?
-A. Himachal Pradesh
-B. Uttarakhand
-C. Punjab
-D. Jammu & Kashmir
-Correct Answer: D
-
-Q.95 The agriculture-based Etor Gidi Festival was celebrated by the Adi tribe of which state?
-A. Meghalaya
-B. Nagaland
-C. Arunachal Pradesh
-D. Manipur
-Correct Answer: C
-
-Q.91 In which state was the Gangamma Jatara Festival 2026 organized?
-A. Telangana
-B. Karnataka
-C. Andhra Pradesh
-D. Tamil Nadu
-Correct Answer: C
-
-Q.5 Who has been appointed Director of the 57th edition of the International Film Festival of India (IFFI)?
-A. Shyam Benegal
-B. Priyadarshan
-C. Ashutosh Gowariker
-D. Rajkumar Hirani
-Correct Answer: C
-
-Q.118 Where was the Nimapara Patha Utsav 2026 organized?
-A. Chhattisgarh
-B. Odisha
-C. Jharkhand
-D. West Bengal
-Correct Answer: B  
-  
-Q.52 What was the name/theme of the 'Rural India Festival 2025' held in New Delhi
+IMPORTANT_DATA["festivals"] = `Q.52 What was the name/theme of the 'Rural India Festival 2025' held in New Delhi
 A. Empowering Villages for Viksit Bharat
 B. Rural Transformation 2025
 C. Gramin Vikas for Modern India
@@ -32991,12 +32939,26 @@ const app = {
             <div style="font-size:10px; color:#7a5a30; margin-top:6px;">&#169; 2026 THE SSC SCHOLARS OFFICIAL</div>
         </div></div>`;
 
-        const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Current Affairs \u2013 ${this.currentMonth} ${this.currentYear}</title><style>*{box-sizing:border-box;}body{background:#0f0800;margin:0;padding:12px;}-webkit-print-color-adjust:exact;print-color-adjust:exact;}@media print{body{background:#1a0f00;padding:0;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}@page{margin:0.8cm;size:A4;}}</style></head><body>${html}</body></html>`;
+        const printStyle = `
+*{box-sizing:border-box;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important;}
+html,body{background:#1a0f00!important;margin:0;padding:12px;}
+@media print{
+  html,body{background:#1a0f00!important;padding:0;margin:0;}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important;}
+  @page{margin:0.6cm;size:A4;}
+}`;
+        const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Current Affairs \u2013 ${this.currentMonth} ${this.currentYear}</title>
+<style>${printStyle}</style>
+</head><body>
+<div style="text-align:center;padding:10px 0 16px;font-family:Arial,sans-serif;">
+  <button onclick="window.print()" style="background:#f5c842;color:#1a0f00;border:none;padding:10px 28px;font-size:14px;font-weight:900;border-radius:8px;cursor:pointer;letter-spacing:1px;">&#128438; PRINT / SAVE AS PDF</button>
+  <div style="font-size:10px;color:#a07840;margin-top:6px;">Tip: In print dialog → More settings → Enable <b style='color:#f5c842'>"Background graphics"</b> to keep dark theme colors</div>
+</div>
+${html}</body></html>`;
         const pw = window.open('', '_blank');
         pw.document.write(fullHTML);
         pw.document.close();
         pw.focus();
-        setTimeout(() => pw.print(), 500);
     },
 
     hideScreens() { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); },
