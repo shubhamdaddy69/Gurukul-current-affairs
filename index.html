@@ -32869,6 +32869,7 @@ const app = {
                 else if (/^C[.)]\s/.test(l)) options[2] = l.slice(2).trim();
                 else if (/^D[.)]\s/.test(l)) options[3] = l.slice(2).trim();
                 else if (l.startsWith('Ans:')) ans = l.slice(4).trim().toUpperCase();
+                else if (/^Correct Answer:/i.test(l)) ans = l.replace(/^Correct Answer:\s*/i, '').trim().toUpperCase();
                 else if (l.startsWith('Exp:')) exp = l.slice(4).trim();
                 else if (l.startsWith('Exam:')) exam = l.slice(5).trim();
                 else { if (l.toLowerCase().includes('select') || l.toLowerCase().includes('choose')) instr = l; else qText += l + " "; }
@@ -32883,49 +32884,61 @@ const app = {
             this.viewMode === 'saved' ? 'SAVED ITEMS REPORT' : 'EXAM PERFORMANCE REPORT';
         let topicLabel = `${this.currentMonth.toUpperCase()} ${this.currentYear}${this.currentSetNum ? ' – SET ' + this.currentSetNum : ''}`;
 
-        let html = `<div style="background:#fff; color:#000; padding:20px; font-family:'Inter', sans-serif;">
-            <div style="border-bottom:3px solid #000; padding-bottom:10px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:flex-end;">
+        let html = `<div style="background:#fff; color:#111; padding:24px; font-family:'Inter',Arial,sans-serif; max-width:800px; margin:0 auto;">
+            <div style="background:linear-gradient(135deg,#1a237e 0%,#283593 60%,#1565c0 100%); color:#fff; border-radius:12px; padding:20px 24px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                 <div>
-                    <h1 style="margin:0; font-size:20px;">THE SSC SCHOLARS OFFICIAL</h1>
-                    <p style="margin:2px 0; font-size:11px; color:#444;">${reportType} | CURRENT AFFAIRS</p>
+                    <div style="font-size:20px; font-weight:900; letter-spacing:1px;">THE SSC SCHOLARS OFFICIAL</div>
+                    <div style="font-size:11px; opacity:0.85; margin-top:3px;">${reportType} &nbsp;|&nbsp; CURRENT AFFAIRS &nbsp;|&nbsp; ${topicLabel}</div>
                 </div>
-                <div style="text-align:right; font-size:10px; color:#666;"><b>DATE:</b> ${time}<br><b>TOPIC:</b> ${topicLabel}</div>
+                <div style="text-align:right; font-size:10px; opacity:0.8;">${time}</div>
             </div>`;
 
         if (this.viewMode === 'normal') {
-            html += `<div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:20px;">
-                <div style="border:1px solid #000; padding:10px; text-align:center;"><b>SCORE: ${this.lastStats.score.toFixed(2)}</b></div>
-                <div style="border:1px solid #000; padding:10px; text-align:center; background:#e8f5e9;">RIGHT: ${this.lastStats.r}</div>
-                <div style="border:1px solid #000; padding:10px; text-align:center; background:#ffebee;">WRONG: ${this.lastStats.w}</div>
-                <div style="border:1px solid #000; padding:10px; text-align:center; background:#f5f5f5;">UA: ${this.lastStats.s}</div>
+            html += `<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px;">
+                <div style="border:2px solid #1a237e; border-radius:10px; padding:12px; text-align:center; background:#e8eaf6;"><div style="font-size:11px; color:#555; font-weight:600;">SCORE</div><div style="font-size:20px; font-weight:900; color:#1a237e;">${this.lastStats.score.toFixed(2)}</div></div>
+                <div style="border:2px solid #2e7d32; border-radius:10px; padding:12px; text-align:center; background:#e8f5e9;"><div style="font-size:11px; color:#555; font-weight:600;">CORRECT</div><div style="font-size:20px; font-weight:900; color:#2e7d32;">${this.lastStats.r}</div></div>
+                <div style="border:2px solid #c62828; border-radius:10px; padding:12px; text-align:center; background:#ffebee;"><div style="font-size:11px; color:#555; font-weight:600;">WRONG</div><div style="font-size:20px; font-weight:900; color:#c62828;">${this.lastStats.w}</div></div>
+                <div style="border:2px solid #e65100; border-radius:10px; padding:12px; text-align:center; background:#fff3e0;"><div style="font-size:11px; color:#555; font-weight:600;">SKIPPED</div><div style="font-size:20px; font-weight:900; color:#e65100;">${this.lastStats.s}</div></div>
             </div>`;
         }
 
-        html += `<div style="display:flex; flex-direction:column; gap:12px;">`;
+        html += `<div style="display:flex; flex-direction:column; gap:14px;">`;
         this.questions.forEach((q, i) => {
             const u = this.userAns[i];
             const isCorrect = u === q.correct;
-            const statusColor = u === undefined ? '#9e9e9e' : (isCorrect ? '#2e7d32' : '#c62828');
+            const accentColor = u === undefined ? '#757575' : (isCorrect ? '#2e7d32' : '#c62828');
+            const headerBg = u === undefined ? '#f5f5f5' : (isCorrect ? '#e8f5e9' : '#ffebee');
+            const statusLabel = u === undefined ? 'SKIPPED' : (isCorrect ? '&#10004; CORRECT' : '&#10008; WRONG');
             let optHtml = '';
             for (let idx = 0; idx < 4; idx++) {
-                let st = 'font-size:11px;';
-                if (this.viewMode === 'normal' && u === idx && idx !== q.correct) st += 'background:#ffebee; padding:4px; font-weight:bold; border-left:3px solid #c62828;';
-                else if (idx === q.correct) st += 'background:#e8f5e9; padding:4px; font-weight:bold; border-left:3px solid #2e7d32;';
-                optHtml += `<div style="${st}">${String.fromCharCode(65 + idx)}. ${q.options[idx]}</div>`;
+                const isUserWrong = this.viewMode === 'normal' && u === idx && idx !== q.correct;
+                const isRight = idx === q.correct;
+                let bg = 'transparent', border = '1px solid #e0e0e0', fw = 'normal', lborder = '3px solid transparent';
+                if (isUserWrong) { bg='#ffebee'; border='1px solid #ef9a9a'; fw='600'; lborder='3px solid #c62828'; }
+                else if (isRight) { bg='#e8f5e9'; border='1px solid #a5d6a7'; fw='700'; lborder='3px solid #2e7d32'; }
+                optHtml += `<div style="font-size:11.5px; background:${bg}; border:${border}; border-left:${lborder}; border-radius:6px; padding:6px 8px; font-weight:${fw}; color:#111;">${String.fromCharCode(65+idx)}. ${q.options[idx]||''}</div>`;
             }
-            const statusText = this.viewMode === 'normal' ? `<span style="font-size:9px; color:${statusColor};">${u === undefined ? 'UA' : (isCorrect ? 'CORRECT' : 'INCORRECT')}</span>` : '';
-            html += `<div style="border:1px solid #eee; padding:10px; page-break-inside:avoid; border-left:4px solid ${this.viewMode === 'normal' ? statusColor : '#2e7d32'};">
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-size:11px; color:#666;">[${q.exam || 'SSC EXAM'}]</span>${statusText}</div>
-                <div style="font-size:13px; margin-bottom:10px; font-weight:bold;">Q${i + 1} ${q.q}</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">${optHtml}</div>
-                <div style="font-size:10px; padding:6px; background:#f9f9f9; border:1px solid #ddd; margin-top:5px;">
-                    <b>ANS: ${String.fromCharCode(65 + q.correct)}</b>${this.viewMode === 'normal' && u !== undefined ? ` | YOUR ANS: ${String.fromCharCode(65 + u)}` : ''}<br>EXP: ${q.exp}
+            const statusBadge = this.viewMode === 'normal' ? `<span style="font-size:10px; font-weight:700; color:${accentColor}; background:${headerBg}; border:1px solid ${accentColor}; border-radius:5px; padding:2px 7px;">${statusLabel}</span>` : '';
+            html += `<div style="border:2px solid ${accentColor}; border-radius:10px; overflow:hidden; page-break-inside:avoid; break-inside:avoid;">
+                <div style="background:${headerBg}; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd;">
+                    <span style="font-size:10.5px; color:#666; font-weight:600;">[${q.exam||'SSC EXAM'}]</span>${statusBadge}
+                </div>
+                <div style="padding:10px 12px;">
+                    <div style="font-size:13px; font-weight:700; color:#111; margin-bottom:10px; line-height:1.5;">Q${i+1}. ${q.q}</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;">${optHtml}</div>
+                    <div style="font-size:11px; padding:8px 10px; background:#fffde7; border:1px solid #f9a825; border-radius:6px; border-left:4px solid #f9a825;">
+                        <b style="color:#e65100;">ANS: ${String.fromCharCode(65+q.correct)}</b>${this.viewMode==='normal'&&u!==undefined?` &nbsp;|&nbsp; <span style="color:#555;">YOUR ANS: ${String.fromCharCode(65+u)}</span>`:''}${q.exp?`<br><span style="color:#444;">EXP: ${q.exp}</span>`:''}
+                    </div>
                 </div>
             </div>`;
         });
-        html += `</div><div style="text-align:center; margin-top:40px; border-top:2px solid #000; padding-top:15px;"><p>JOIN OUR OFFICIAL TELEGRAM CHANNEL</p><a href="https://t.me/thesscscholarsofficial" style="color:#0088cc; font-weight:bold;">t.me/thesscscholarsofficial</a><p>© 2026 THE SSC SCHOLARS OFFICIAL</p></div></div>`;
+        html += `</div><div style="text-align:center; margin-top:30px; background:linear-gradient(135deg,#1a237e,#1565c0); color:#fff; border-radius:10px; padding:16px;">
+            <div style="font-size:13px; font-weight:700; margin-bottom:4px;">JOIN OUR OFFICIAL TELEGRAM CHANNEL</div>
+            <div style="font-size:14px; color:#90caf9; font-weight:900;">t.me/thesscscholarsofficial</div>
+            <div style="font-size:10px; opacity:0.7; margin-top:6px;">&#169; 2026 THE SSC SCHOLARS OFFICIAL</div>
+        </div></div>`;
 
-        const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Current Affairs – ${this.currentMonth} ${this.currentYear}</title><style>@media print{body{margin:0;padding:15px;}@page{margin:1cm;size:A4;}}body{background:white;}</style></head><body>${html}</body></html>`;
+        const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Current Affairs \u2013 ${this.currentMonth} ${this.currentYear}</title><style>*{box-sizing:border-box;}body{background:#f0f2f5;margin:0;padding:12px;}@media print{body{background:white;padding:0;margin:0;}@page{margin:0.8cm;size:A4;}}</style></head><body>${html}</body></html>`;
         const pw = window.open('', '_blank');
         pw.document.write(fullHTML);
         pw.document.close();
